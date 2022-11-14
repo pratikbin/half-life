@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:latest
-ARG DISTROLESS_IMAGE=cgr.dev/chainguard/static:nonroot
+ARG DISTROLESS_IMAGE=cgr.dev/chainguard/static
 ARG ALPINE=docker.io/library/alpine
 # ARG AKASH=docker.io/library/ubuntu
 ARG GO_VERSION=1.19-alpine
