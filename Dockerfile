@@ -2,10 +2,10 @@
 ARG DISTROLESS_IMAGE=cgr.dev/chainguard/static:nonroot
 ARG ALPINE=docker.io/library/alpine
 # ARG AKASH=docker.io/library/ubuntu
-ARG GO_VERSION=1.19
+ARG GO_VERSION=1.19-alpine
 
 FROM --platform=$BUILDPLATFORM crazymax/goreleaser-xx:latest AS goreleaser-xx
-FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine AS base
+FROM --platform=$BUILDPLATFORM golang:${GO_VERSION} AS base
 ENV CGO_ENABLED=0
 COPY --from=goreleaser-xx / /
 RUN --mount=type=cache,target=/tmp/apkcache \
