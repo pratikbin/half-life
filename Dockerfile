@@ -22,17 +22,17 @@ RUN --mount=type=bind,source=.,rw \
     --flags="-trimpath" \
     --ldflags="-s -w"
 
-FROM --platform=$TARGETPLATFORM ${ALPINE} AS scratch-rootfs
+FROM --platform=$TARGETPLATFORM ${PROD_IMAGE} AS scratch-rootfs
 RUN addgroup -S nonroot -g 65532 && \
-	adduser -S nonroot -h /home/nonroot -G nonroot -u 65532
+  adduser -S nonroot -h /home/nonroot -G nonroot -u 65532
 COPY --from=build /usr/local/bin/halflife /usr/local/bin/halflife
-FROM scratch as alpine-rootfs
+FROM scratch as rootfs
 COPY --from=scratch-rootfs / /
 ENTRYPOINT ["/usr/local/bin/halflife"]
 
-FROM --platform=$TARGETPLATFORM alpine-rootfs AS prod
+FROM --platform=$TARGETPLATFORM rootfs AS prod
 
-FROM --platform=$TARGETPLATFORM alpine-rootfs AS nonroot
+FROM --platform=$TARGETPLATFORM rootfs AS nonroot
 USER nonroot:nonroot
 
 FROM --platform=$TARGETPLATFORM ${DISTROLESS_IMAGE} AS distroless
