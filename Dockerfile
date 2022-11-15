@@ -2,14 +2,12 @@
 ARG distroless_image=cgr.dev/chainguard/static
 ARG prod_image=alpine
 # ARG AKASH_IMAGE=docker.io/library/ubuntu
-ARG go_image=golang:1.19-alpine
+ARG go_image=golang:1.19
 
 FROM --platform=$BUILDPLATFORM crazymax/goreleaser-xx:latest AS goreleaser-xx
 FROM --platform=$BUILDPLATFORM ${go_image} AS base
 ENV CGO_ENABLED=0
 COPY --from=goreleaser-xx / /
-RUN --mount=type=cache,target=/tmp/apkcache \
-  apk add --cache-dir=/tmp/apkcache git make gcc g++
 WORKDIR /src
 
 FROM base AS build
